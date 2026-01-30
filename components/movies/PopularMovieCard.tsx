@@ -32,7 +32,7 @@ export function PopularMovieCard({
           <MoviePoster
             src={poster }
             alt={title}
-            className="object-contain transition-transform duration-300 group-hover:scale-105 "
+            className={` transition-transform duration-300 group-hover:scale-105 ${!poster ? "": ""}`}
           />
           <MovieBadge badge={badge} badges={badges} />
         </div>

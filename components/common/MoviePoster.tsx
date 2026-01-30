@@ -22,7 +22,7 @@ export function MoviePoster({
   sizes,
   width,
   height,
-  fallback = "/globe.svg",
+  fallback = "/movie-placeholder.jpg",
 }: MoviePosterProps) {
   const [imgSrc, setImgSrc] = useState(src ?? fallback);
   const [hasError, setHasError] = useState(false);

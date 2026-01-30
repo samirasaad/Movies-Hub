@@ -10,7 +10,7 @@ type PopularSectionProps = {
 
 export function PopularSection({ movies }: PopularSectionProps) {
   return (
-    <section className="py-6 px-4 md:px-8">
+    <section className="py-6 px-4 md:px-8 container mx-auto">
       <SectionTitle>Popular</SectionTitle>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-7">
         {movies.map((movie, index) => (

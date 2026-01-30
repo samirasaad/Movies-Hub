@@ -37,7 +37,7 @@ const SearchInput = ({ placeholder, onSearchChange }: SearchInputProps) => {
         aria-label="Movie placeholder"
       >
         <Image
-          src="/movie-placeholder.png"
+          src="/movie-icon.png"
           alt="Movie placeholder"
           width={24}
           height={24}
