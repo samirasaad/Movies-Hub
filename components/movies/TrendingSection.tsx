@@ -14,7 +14,7 @@ export function TrendingSection({ movies }: TrendingSectionProps) {
 
   return (
     <section className="py-6">
-      <SectionTitle className="text-primary font-semibold text-lg px-4 md:px-8 mb-4">
+      <SectionTitle className="text-primary font-semibold text-2xl md:text-3xl px-4 md:px-8 mb-4 text-center">
         Trending
       </SectionTitle>
       <div
