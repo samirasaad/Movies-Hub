@@ -204,21 +204,3 @@ export const getPopularMovies = (): Movie[] =>
       movie.id,
     ),
   );
-
-// Helper types for section-specific data
-export type TrendingMovieData = {
-  number: number;
-  title: string;
-  poster: string;
-};
-
-export type PopularMovieData = {
-  id?: string;
-  title: string;
-  poster: string;
-  rating: number;
-  category: string;
-  type: string;
-  badge?: string;
-  badges?: string[];
-};
