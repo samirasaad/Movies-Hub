@@ -1,6 +1,6 @@
 /**
  * Central cache config for data layer.
- * Next.js fetch cache: revalidate = ISR (Incremental Static Regeneration) in seconds.
+ * Next.js fetch: use number for revalidate (ISR) in seconds; use "force-cache" for indefinite cache (see get() in lib/data/public/_get.ts).
  */
 
 export const CACHE = {

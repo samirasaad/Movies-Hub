@@ -1,12 +1,15 @@
 const TMDB_BASE = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
 
+/** Cache option: number = revalidate (ISR) in seconds; 'force-cache' = cache indefinitely. */
+export type GetCacheOption = number | "force-cache";
+
 export async function get<T>(
   path: string,
   params: Record<string, string | number | boolean | undefined> = {},
-  revalidate?: number,
+  cacheOption?: GetCacheOption,
 ): Promise<T> {
   let key = process.env.TMDB_API_KEY?.trim().replace(/^Bearer\s+/i, "") ?? "";
- 
+
   if (!key) throw new Error("TMDB_API_KEY required. Add it to .env.local");
   if (key.length > 50) {
     throw new Error(
@@ -20,12 +23,18 @@ export async function get<T>(
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
+  const fetchOptions: RequestInit & { cache?: "force-cache"; next?: { revalidate: number } } = {
+    signal: controller.signal,
+  };
+  if (cacheOption === "force-cache") {
+    fetchOptions.cache = "force-cache";
+  } else if (typeof cacheOption === "number") {
+    fetchOptions.next = { revalidate: cacheOption };
+  }
+
   let res: Response;
   try {
-    res = await fetch(url, {
-      signal: controller.signal,
-      next: revalidate != null ? { revalidate } : undefined,
-    });
+    res = await fetch(url, fetchOptions);
   } finally {
     clearTimeout(timeout);
   }
@@ -37,7 +46,7 @@ export async function get<T>(
       const parsed = JSON.parse(bodyText) as { status_message?: string };
       if (parsed.status_message) msg += `: ${parsed.status_message}`;
     } catch {
-      /* ignore */
+      /* todo: handle error */
     }
     throw new Error(msg);
   }

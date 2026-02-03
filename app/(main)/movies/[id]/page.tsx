@@ -43,6 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function MovieDetailsPage({ params }: Props) {
   const { id } = await params;
   const result = await fetchMovieDetails(id);
+  console.log(result);
   if (!result) notFound();
   const { movie } = result;
 
@@ -69,7 +70,7 @@ export default async function MovieDetailsPage({ params }: Props) {
         )}
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-6 pt-20 sm:px-6 sm:pb-8 sm:pt-24 lg:px-8 lg:pb-10 lg:pt-24">
         <MovieDetailsHeader movie={movie} />
 
         <section className="mt-6 flex flex-col gap-6 sm:max-w-md lg:max-w-sm">

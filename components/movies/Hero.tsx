@@ -51,16 +51,6 @@ const floatingPosters = [
 export function HeroSection() {
   return (
     <section className="relative pt-6 pb-10 px-4 md:px-8 overflow-hidden">
-      {/* Logo */}
-      <div className="flex justify-center mb-4">
-        <div className="w-10 h-10 md:w-12 md:h-12">
-          <svg viewBox="0 0 48 48" fill="none" className="w-full h-full">
-            <path d="M24 4L44 24L24 44L4 24L24 4Z" fill="#be5eff" />
-            <path d="M24 12L36 24L24 36L12 24L24 12Z" fill="#ff6b9d" />
-            <path d="M24 18L30 24L24 30L18 24L24 18Z" fill="#ffd93d" />
-          </svg>
-        </div>
-      </div>
 
       {/* Hero Poster */}
       <div className="relative h-100  max-w-xl mx-auto">
