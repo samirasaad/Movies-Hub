@@ -6,3 +6,4 @@ export type { DiscoverMoviesResult } from "./discover/fetch";
 export { fetchSearchMovies } from "./search/fetch";
 export type { SearchMoviesResult } from "./search/fetch";
 export { fetchMovieDetails } from "./detail/fetch";
+export type { MovieDetailsResult } from "./detail/fetch";

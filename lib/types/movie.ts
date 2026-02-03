@@ -31,8 +31,10 @@ export interface MovieDetails extends Movie {
   homepage?: string;
   imdbId?: string;
   productionCompanies?: string[];
+  productionCountries?: string[];
   spokenLanguages?: string[];
   status?: string;
+  voteCount?: number;
 }
 
 export interface MovieSearchParams {

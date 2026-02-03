@@ -1,29 +1,35 @@
-import type { Movie } from "@/lib/types/movie";
-import type { TmdbMovie } from "@/lib/types/tmdb";
+import type { MovieDetails } from "@/lib/types/movie";
+import type { TmdbMovieDetails } from "@/lib/types/tmdb";
 import { CACHE } from "@/lib/constants/cache";
 import { MOVIE_API_ENDPOINTS } from "@/lib/constants/api-endpoints";
 import { get } from "../_get";
-import { transformTmdbMovie } from "../_transform";
+import { transformTmdbMovieDetails } from "../_transform";
 
-type TmdbMovieDetail = TmdbMovie & { runtime?: number | null };
+/**
+ * Result shape for movie details, aligned with other data-layer results
+ * (PopularMoviesResult, DiscoverMoviesResult, etc.).
+ */
+export interface MovieDetailsResult {
+  movie: MovieDetails;
+}
 
-export async function fetchMovieDetails(id: string): Promise<Movie | null> {
+/**
+ * Fetches movie details from TMDB by id. Uses get() + transform to app
+ * MovieDetails model. Use in Server Components. Returns null when the
+ * movie is not found or the request fails.
+ */
+export async function fetchMovieDetails(
+  id: string,
+): Promise<MovieDetailsResult | null> {
   try {
-    const raw = await get<TmdbMovieDetail>(
+    const raw = await get<TmdbMovieDetails>(
       MOVIE_API_ENDPOINTS.MOVIE_DETAIL(id),
       {},
       CACHE.MEDIUM,
     );
-    const movie = transformTmdbMovie(raw);
-    const h = raw.runtime ? Math.floor(raw.runtime / 60) : 0;
-    const m = raw.runtime ? raw.runtime % 60 : 0;
-    const duration = raw.runtime
-      ? [h && `${h}h`, m && `${m}m`].filter(Boolean).join(" ")
-      : "";
-    return { ...movie, duration };
-  } catch(error) {
-    console.log('error',error);
+    const movie = transformTmdbMovieDetails(raw);
+    return { movie };
+  } catch {
     return null;
-  } finally {
   }
 }

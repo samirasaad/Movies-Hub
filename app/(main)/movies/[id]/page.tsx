@@ -1,7 +1,13 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import {
+  MovieDetailsHeader,
+  MovieDetailsPanel,
+  MoviePosterBlock,
+} from "@/components/movie-details";
 import { fetchMovieDetails } from "@/lib/data";
+import { formatPosterOverlay } from "@/lib/utils/format";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -9,102 +15,73 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const movie = await fetchMovieDetails(id);
-  if (!movie) return { title: "Movie not found • MovieBox" };
+  const result = await fetchMovieDetails(id);
+  if (!result) return { title: "Movie not found • MovieBox" };
+  const { movie } = result;
   return {
     title: `${movie.title} (${movie.year}) • MovieBox`,
-    description: `Watch ${movie.title}, rated ${movie.rating.toFixed(1)}/10. Genres: ${movie.genres.join(", ")}.`,
+    description:
+      movie.tagline ||
+      `Watch ${movie.title}, rated ${movie.rating.toFixed(1)}/10. Genres: ${movie.genres.join(", ")}.`,
     openGraph: {
       title: movie.title,
-      description: `Watch ${movie.title}, rated ${movie.rating.toFixed(1)}/10.`,
-      images: [{ url: movie.posterUrl, width: 800, height: 450, alt: `${movie.title} poster` }],
+      description:
+        movie.tagline ||
+        `Watch ${movie.title}, rated ${movie.rating.toFixed(1)}/10.`,
+      images: [
+        {
+          url: movie.posterUrl,
+          width: 800,
+          height: 450,
+          alt: `${movie.title} poster`,
+        },
+      ],
     },
   };
 }
 
 export default async function MovieDetailsPage({ params }: Props) {
   const { id } = await params;
-  const movie = await fetchMovieDetails(id);
-  if (!movie) notFound();
+  const result = await fetchMovieDetails(id);
+  if (!result) notFound();
+  const { movie } = result;
+
+  const posterOverlay =
+    formatPosterOverlay(movie.releaseDate, movie.status) ?? movie.tagline;
+  const backdropSrc = movie.backdropUrl ?? movie.posterUrl;
 
   return (
-    <div className="space-y-8">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)]">
-        <div className="relative overflow-hidden rounded-3xl bg-zinc-900/80 ring-1 ring-white/10">
-          <div className="relative aspect-video w-full sm:aspect-[21/9]">
+    <div className="relative min-h-screen bg-zinc-950">
+      {/* Full-width background with dark overlay */}
+      <div className="fixed inset-0 z-0 w-full bg-zinc-950">
+        {backdropSrc && (
+          <>
             <Image
-              src={movie.posterUrl ?? "/window.svg"}
-              alt={movie.title}
+              src={backdropSrc}
+              alt=""
               fill
-              className="object-contain"
-              sizes="(min-width: 1024px) 60vw, 100vw"
+              className="object-cover"
+              sizes="100vw"
+              priority
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-          </div>
+            <div className="absolute inset-0 bg-black/70" aria-hidden />
+          </>
+        )}
+      </div>
 
-          <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3 p-4 sm:p-6 lg:p-8">
-            <div className="flex flex-wrap items-center gap-3 text-[11px] text-zinc-300">
-              {movie.tag && (
-                <span className="rounded-full bg-red-600/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
-                  {movie.tag}
-                </span>
-              )}
-              <span className="rounded-full bg-zinc-900/80 px-2 py-0.5">{movie.year}</span>
-              <span className="h-0.5 w-0.5 rounded-full bg-zinc-500" />
-              <span>{movie.duration || "—"}</span>
-              <span className="h-0.5 w-0.5 rounded-full bg-zinc-500" />
-              <span className="flex items-center gap-1 text-amber-400">
-                ★ <span className="font-semibold">{movie.rating.toFixed(1)}</span>
-              </span>
-            </div>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+        <MovieDetailsHeader movie={movie} />
 
-            <h1 className="text-balance text-2xl font-semibold tracking-tight text-white sm:text-3xl lg:text-4xl">
-              {movie.title}
-            </h1>
+        <section className="mt-6 flex flex-col gap-6 sm:max-w-md lg:max-w-sm">
+          <MoviePosterBlock
+            movie={movie}
+            overlayText={posterOverlay || undefined}
+          />
+        </section>
 
-            <div className="flex flex-wrap gap-2 text-[11px] text-zinc-300">
-              {movie.genres.map((genre) => (
-                <span key={genre} className="rounded-full bg-zinc-900/80 px-3 py-1">
-                  {genre}
-                </span>
-              ))}
-            </div>
-
-            <div className="mt-2 flex flex-wrap gap-3 text-xs text-zinc-300">
-              <button className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-[11px] font-semibold text-black shadow-sm hover:bg-zinc-100">
-                ▶ Play movie
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <aside className="space-y-5 rounded-3xl bg-zinc-950/60 p-5 ring-1 ring-white/10 sm:p-6 lg:p-7">
-          <div>
-            <h2 className="text-sm font-semibold text-white">Overview</h2>
-            <p className="mt-2 text-xs leading-relaxed text-zinc-400 sm:text-sm">
-              {movie.overview || `Watch ${movie.title} — rated ${movie.rating.toFixed(1)}/10.`}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 text-xs text-zinc-300 sm:text-sm">
-            <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-wide text-zinc-500">Release year</p>
-              <p>{movie.year}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-wide text-zinc-500">Duration</p>
-              <p>{movie.duration || "—"}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-wide text-zinc-500">Rating</p>
-              <p>{movie.rating.toFixed(1)} / 10</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-wide text-zinc-500">Genres</p>
-              <p>{movie.genres.join(", ")}</p>
-            </div>
-          </div>
-        </aside>
+        <section className="mt-8 sm:mt-10">
+          <MovieDetailsPanel movie={movie} />
+        </section>
       </div>
     </div>
   );

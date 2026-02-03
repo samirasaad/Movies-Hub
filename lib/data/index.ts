@@ -12,5 +12,6 @@ export type {
   PopularMoviesResult,
   DiscoverMoviesResult,
   SearchMoviesResult,
+  MovieDetailsResult,
 } from "./public";
 
