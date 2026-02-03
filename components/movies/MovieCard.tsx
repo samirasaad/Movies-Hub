@@ -1,6 +1,7 @@
 import Link from "next/link";
-import type { Movie } from "@/components/movies/types";
+import type { Movie } from "@/lib/types/movie";
 import { MoviePoster } from "@/components/common/MoviePoster";
+import { ROUTES } from "@/lib/constants/routes";
 
 type MovieCardProps = {
   movie: Movie;
@@ -63,7 +64,7 @@ const MovieCard = ({ movie, variant = "default" }: MovieCardProps) => {
             <span className="font-semibold">{movie.rating.toFixed(1)}</span>
           </div>
           <Link
-            href={`/movies/${movie.id}`}
+            href={ROUTES.MOVIE_DETAIL(movie.id)}
             className="rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-black shadow-sm hover:bg-zinc-100"
           >
             Details

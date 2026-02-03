@@ -1,16 +1,18 @@
-export type Movie = {
+/** UI / view types for movie components */
+
+export interface TrendingMovieData {
+  number: number;
+  title: string;
+  poster: string;
+}
+
+export interface PopularMovieData {
   id: string;
   title: string;
-  year: string;
+  poster: string;
   rating: number;
-  genres: string[];
-  duration: string;
-  posterUrl: string;
-  tag?: string;
-  type?: "Movie" | "Series"; // For Popular section: "Action • Movie" or "Action • Series"
-  overlay?: {
-    type: "avatars" | "icon";
-    content?: string; // For avatars: "S S 5" or "E" for icon
-  };
-};
-
+  category: string;
+  type: string;
+  badge?: string;
+  badges?: string[];
+}

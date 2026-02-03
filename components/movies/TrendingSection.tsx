@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { TrendingMovieCard } from "@/components/movies/TrendingMovieCard";
 import { SectionTitle } from "@/components/common/SectionTitle";
-import type { TrendingMovieData } from "@/lib/movies";
+import type { TrendingMovieData } from "@/components/movies/types";
 
 type TrendingSectionProps = {
   movies: TrendingMovieData[];

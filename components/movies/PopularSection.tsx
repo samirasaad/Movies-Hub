@@ -2,7 +2,7 @@
 
 import { PopularMovieCard } from "@/components/movies/PopularMovieCard";
 import { SectionTitle } from "@/components/common/SectionTitle";
-import type { PopularMovieData } from "@/lib/movies";
+import type { PopularMovieData } from "@/components/movies/types";
 
 type PopularSectionProps = {
   movies: PopularMovieData[];

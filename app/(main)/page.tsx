@@ -2,33 +2,36 @@ import Pagination from "@/components/common/Pagination";
 import { HeroSection } from "@/components/movies/Hero";
 import { PopularSection } from "@/components/movies/PopularSection";
 import { TrendingSection } from "@/components/movies/TrendingSection";
-import { getTrendingMovies, getPopularMovies } from "@/lib/movies";
+import type { PopularMovieData, TrendingMovieData } from "@/components/movies/types";
+import { ROUTES } from "@/lib/constants/routes";
+import { fetchPopularMovies, fetchTrendingMovies } from "@/lib/data";
 
-export default function HomePage() {
-  const trendingMovies = getTrendingMovies();
-  const popularMovies = getPopularMovies();
+type Props = { searchParams: Promise<{ page?: string; q?: string; genre?: string; year?: string }> };
 
-  // Transform trending movies to TrendingMovieData format
-  const trendingData = trendingMovies.map((movie, index) => ({
-    number: index + 1,
-    title: movie.title,
-    poster: movie.posterUrl,
+export default async function HomePage({ searchParams }: Props) {
+  const params = await searchParams;
+  const page = params.page ? parseInt(params.page, 10) : 1;
+  const trending = await fetchTrendingMovies();
+  const popular = await fetchPopularMovies(page);
+  const trendingData: TrendingMovieData[] = trending.map((m, i) => ({
+    number: i + 1,
+    title: m.title,
+    poster: m.posterUrl,
   }));
 
-  // Transform popular movies to PopularMovieData format
-  const popularData = popularMovies.map((movie) => ({
-    id: movie.id,
-    title: movie.title,
-    poster: movie.posterUrl,
-    rating: movie.rating,
-    category: movie.genres[0] ?? "Action",
-    type: movie.type ?? "Movie",
-    badge: movie.overlay?.type === "icon" ? movie.overlay.content : undefined,
-    badges: movie.overlay?.type === "avatars" ? movie.overlay.content?.split(" ") : undefined,
+  const popularData: PopularMovieData[] = popular.movies.map((m) => ({
+    id: m.id,
+    title: m.title,
+    poster: m.posterUrl,
+    rating: m.rating,
+    category: m.genres[0] ?? "Action",
+    type: m.type ?? "Movie",
+    badge: m.overlay?.type === "icon" ? m.overlay.content : undefined,
+    badges: m.overlay?.type === "avatars" ? m.overlay.content?.split(" ") : undefined,
   }));
 
   return (
-    <main 
+    <main
       className="min-h-screen bg-background relative"
       style={{
         backgroundImage: "url('/BG.png')",
@@ -41,7 +44,12 @@ export default function HomePage() {
       <HeroSection />
       <TrendingSection movies={trendingData} />
       <PopularSection movies={popularData} />
-      <Pagination currentPage={2} totalPages={50} />
+      <Pagination
+        basePath={ROUTES.HOME}
+        currentPage={page}
+        totalPages={popular.totalPages}
+        searchParams={params}
+      />
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ROUTES } from "@/lib/constants/routes";
 
 const Navbar = () => {
   return (
@@ -26,7 +27,7 @@ const Navbar = () => {
         </button>
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href={ROUTES.HOME} className="flex items-center gap-2">
           <div className="relative h-10 w-10">
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-yellow-500" />
             <div className="absolute inset-[2px] flex items-center justify-center rounded-full bg-indigo-950">

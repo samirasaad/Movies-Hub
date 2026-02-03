@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MoviePoster } from "@/components/common/MoviePoster";
 import { MovieBadge } from "@/components/movies/MovieBadge";
 import { StarIcon } from "@/components/common/StarIcon";
+import { ROUTES } from "@/lib/constants/routes";
 
 type PopularMovieCardProps = {
   id?: string;
@@ -26,7 +27,7 @@ export function PopularMovieCard({
 }: PopularMovieCardProps) {
 
   return (
-    <Link href={id ? `/movies/${id}` : "#"}>
+    <Link href={id ? ROUTES.MOVIE_DETAIL(id) : "#"}>
       <article className="group cursor-pointer">
         <div className="relative aspect-2/3 rounded-lg overflow-hidden mb-2">
           <MoviePoster
@@ -37,7 +38,7 @@ export function PopularMovieCard({
           <MovieBadge badge={badge} badges={badges} />
         </div>
         <h3 className="text-foreground text-sm font-medium truncate">
-          {title}
+          {title} 
         </h3>
         <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
           <StarIcon />
