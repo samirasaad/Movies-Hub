@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ROUTES } from "@/lib/constants/routes";
@@ -16,6 +16,14 @@ import SearchInput from "../common/SearchInput";
 const Navbar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  // unmount:clear the timeout
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
 
   /**
    * Ref used to debounce search input changes so we don't
@@ -63,7 +71,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="absolute inset-x-0 top-0 z-50 border-b border-white/10 bg-transparent backdrop-blur-sm">
+    <nav aria-label="Global navigation" className="absolute inset-x-0 top-0 z-50 border-b border-white/10 bg-transparent backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-center px-4 sm:px-6 lg:px-8 gap-4">
         {/* App logo / brand – always links to the root public home page */}
         <Link href={ROUTES.HOME} className="flex items-center gap-2">

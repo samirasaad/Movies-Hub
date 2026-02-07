@@ -28,7 +28,7 @@ const SearchInput = ({
   };
 
   return (
-    <div className="relative">
+    <div aria-label="Search input" className="relative">
       <label className="sr-only" htmlFor="movie-search">
         Search movies
       </label>
@@ -43,11 +43,11 @@ const SearchInput = ({
       <button
         type="button"
         className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 transition-colors"
-        aria-label="Movie placeholder"
+        aria-label="Submit search"
       >
         <Image
           src="/movie-icon.png"
-          alt="Movie placeholder"
+          alt="Submit search"
           width={24}
           height={24}
           className="object-contain"

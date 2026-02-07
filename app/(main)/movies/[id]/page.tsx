@@ -8,10 +8,15 @@ import {
 } from "@/components/movie-details";
 import { fetchMovieDetails } from "@/lib/data";
 import { formatPosterOverlay } from "@/lib/utils/format";
-import { CACHE } from "@/lib/constants/cache";
 
 type Props = { params: { id: string } };
-export const revalidate = CACHE.MEDIUM;
+/** ISR: revalidate every hour (must be a literal for segment config). 
+ * static value is 3600 seconds (1 hour)
+ * not imported from cache.ts because it is a static value
+ * and we want to use a literal for segment config.
+ * otherwise caused build error
+*/
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;

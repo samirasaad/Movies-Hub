@@ -5,7 +5,7 @@ import { MOVIE_API_ENDPOINTS } from "@/lib/constants/api-endpoints";
 import { get } from "../_get";
 import { transformTmdbMovie } from "../_transform";
 
-export interface SearchMoviesResult {
+export interface search {
   movies: Movie[];
   page: number;
   totalPages: number;
@@ -16,7 +16,7 @@ export interface SearchMoviesResult {
 export async function fetchSearchMovies(params: {
   query: string;
   page?: number;
-}): Promise<SearchMoviesResult> {
+}): Promise<search> {
   const page = Math.max(1, params.page ?? 1);
   const raw = await get<TmdbPaginatedResponse<TmdbMovie>>(
     MOVIE_API_ENDPOINTS.SEARCH_MOVIE,

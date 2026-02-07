@@ -11,7 +11,7 @@ type Props = {
   }>;
 };
 
-export default async function SearchMoviesResultPage({ searchParams }: Props) {
+export default async function searchPage({ searchParams }: Props) {
   const params = await searchParams;
   const page = params.page ? parseInt(params.page, 10) : 1;
   const query = params.q?.trim() ?? "";

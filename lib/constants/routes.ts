@@ -5,5 +5,5 @@ export const ROUTES = {
   HOME: "/",
   MOVIES: "/movies",
   MOVIE_DETAIL: (id: string | number) => `/movies/${id}`,
-  SEARCH_RESULTS: "/searchmoviesresult",
+  SEARCH_RESULTS: "/search",
 } as const;
