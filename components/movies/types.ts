@@ -1,12 +1,7 @@
 /** UI / view types for movie components */
 
-export interface TrendingMovieData {
-  number: number;
-  title: string;
-  poster: string;
-}
-
-export interface PopularMovieData {
+/** One type for movie (popular, search, trending). */
+export interface MovieCardData {
   id: string;
   title: string;
   poster: string;
@@ -15,4 +10,6 @@ export interface PopularMovieData {
   type: string;
   badge?: string;
   badges?: string[];
+  /** Rank/position (e.g. trending). */
+  number?: number;
 }

@@ -1,4 +1,4 @@
-import { MoviePoster } from "@/components/common/MoviePoster";
+import { MoviePoster } from "@/components/movies/MoviePoster";
 
 type TrendingMovieCardProps = {
   number: number;

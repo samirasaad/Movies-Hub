@@ -1,16 +1,25 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 type SearchInputProps = {
   placeholder?: string;
+  defaultValue?: string;
   onSearchChange?: (value: string) => void;
 };
 
-const SearchInput = ({ placeholder, onSearchChange }: SearchInputProps) => {
-  const [value, setValue] = useState("");
+const SearchInput = ({
+  placeholder,
+  defaultValue = "",
+  onSearchChange,
+}: SearchInputProps) => {
+  const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextValue = event.target.value;
@@ -49,4 +58,3 @@ const SearchInput = ({ placeholder, onSearchChange }: SearchInputProps) => {
 };
 
 export default SearchInput;
-

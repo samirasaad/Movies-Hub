@@ -3,10 +3,10 @@
 import { useRef } from "react";
 import { TrendingMovieCard } from "@/components/movies/TrendingMovieCard";
 import { SectionTitle } from "@/components/common/SectionTitle";
-import type { TrendingMovieData } from "@/components/movies/types";
+import type { MovieCardData } from "@/components/movies/types";
 
 type TrendingSectionProps = {
-  movies: TrendingMovieData[];
+  movies: MovieCardData[];
 };
 
 export function TrendingSection({ movies }: TrendingSectionProps) {
@@ -24,8 +24,8 @@ export function TrendingSection({ movies }: TrendingSectionProps) {
       >
         {movies.map((movie) => (
           <TrendingMovieCard
-            key={movie.number}
-            number={movie.number}
+            key={movie.id}
+            number={movie.number ?? 0}
             title={movie.title}
             poster={movie.poster}
           />

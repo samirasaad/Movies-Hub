@@ -8,10 +8,10 @@ import {
 } from "@/components/movie-details";
 import { fetchMovieDetails } from "@/lib/data";
 import { formatPosterOverlay } from "@/lib/utils/format";
+import { CACHE } from "@/lib/constants/cache";
 
-type Props = { params: Promise<{ id: string }> };
-
-export const revalidate = 3600;
+type Props = { params: { id: string } };
+export const revalidate = CACHE.MEDIUM;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
@@ -43,7 +43,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function MovieDetailsPage({ params }: Props) {
   const { id } = await params;
   const result = await fetchMovieDetails(id);
-  console.log(result);
   if (!result) notFound();
   const { movie } = result;
 

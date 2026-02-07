@@ -1,21 +1,29 @@
-"use client";
 
 import { MovieCardGridItem } from "@/components/movies/MovieCard";
 import { SectionTitle } from "@/components/common/SectionTitle";
 import type { MovieCardData } from "@/components/movies/types";
 
-type PopularSectionProps = {
-  movies: MovieCardData[];
+type SearchSectionProps = {
+  results: MovieCardData[];
+  title: string;
+  subtitle?: string;
 };
 
-export function PopularSection({ movies }: PopularSectionProps) {
+export function SearchSection({
+  results,
+  title,
+  subtitle,
+}: SearchSectionProps) {
   return (
     <section className="py-6 px-4 md:px-8 container mx-auto">
       <SectionTitle className="text-2xl md:text-3xl text-center mb-4">
-        Popular
+        {title}
       </SectionTitle>
+      {subtitle && (
+        <p className="text-sm text-zinc-300 text-center mb-4">{subtitle}</p>
+      )}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-7">
-        {movies.map((movie, index) => (
+        {results.map((movie, index) => (
           <MovieCardGridItem
             key={movie.id ?? index}
             id={movie.id}
